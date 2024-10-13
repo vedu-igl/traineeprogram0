@@ -8,7 +8,7 @@
         /* General Styling */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f0f0f0;
             color: #333;
             margin: 0;
             padding: 0;
@@ -22,10 +22,13 @@
             width: 100%;
             max-width: 600px;
             background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 20px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 30px;
             margin: 20px;
+            border: 1px solid #ddd;
+            overflow-y: auto;  /* Allow vertical scrolling */
+            max-height: 80vh;   /* Ensures it fits smaller screens */
         }
 
         h1, h2 {
@@ -34,41 +37,45 @@
         }
 
         h2 {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         label {
             font-weight: bold;
-            margin-bottom: 5px;
             display: block;
+            margin-bottom: 8px;
+            color: #333;
         }
 
-        input[type="text"], input[type="number"], input[type="tel"], textarea {
+        input[type="text"], input[type="number"], input[type="tel"], input[type="email"], textarea {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            padding: 12px;
+            margin-bottom: 25px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: #f7f7f7;
+            outline: none;
+            transition: border-color 0.3s;
         }
 
-        input[type="checkbox"] {
-            margin-right: 10px;
+        input:focus, textarea:focus {
+            border-color: #1a73e8;
         }
 
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 100px;
         }
 
         button {
             background-color: #1a73e8;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
@@ -77,24 +84,62 @@
 
         .summary p {
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
         }
 
-        .page { 
-            display: none; 
+        .page {
+            display: none;
         }
 
         .page.active {
             display: block;
         }
 
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            .container {
-                width: 90%;
-            }
+        /* Page indicator styles */
+        .page-indicator {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
+        .page-indicator span {
+            background-color: #ddd;
+            border-radius: 50%;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin: 0 5px;
+        }
+
+        .page-indicator span.active {
+            background-color: #1a73e8;
+        }
+
+        /* Adjusting for mobile screens */
+        @media (max-width: 600px) {
+            body {
+                height: auto;
+                padding: 10px;
+                align-items: flex-start;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 20px;
+                margin: 0;
+            }
+
+            input, textarea {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -102,16 +147,21 @@
 <div class="container">
     <h1>Trainee Program Registration</h1>
 
+    <!-- Page Indicator -->
+    <div class="page-indicator">
+        <span class="active"></span><span></span><span></span>
+    </div>
+
     <!-- Page 1: Trainer's qualifications -->
     <div class="page active" id="page1">
         <h2>Trainer's Qualifications</h2>
         <p>Select the training programs you're interested in:</p>
-        <form id="qualificationsForm">
-            <label><input type="checkbox" id="personalCoach" name="qualification" value="Personal Coach"> Personal Coach</label>
-            <label><input type="checkbox" id="weightTraining" name="qualification" value="Weight Training"> Weight Training</label>
-            <label><input type="checkbox" id="strengthTraining" name="qualification" value="Strength Training"> Strength Training</label>
-            <label><input type="checkbox" id="weightGain" name="qualification" value="Specialized in Weight Gain"> Specialized in Weight Gain</label>
-            <label><input type="checkbox" id="fatLoss" name="qualification" value="Specialized in Fat Loss"> Specialized in Fat Loss</label>
+        <form id="mainForm">
+            <label><input type="checkbox" name="qualification" value="Personal Coach" required> Personal Coach</label>
+            <label><input type="checkbox" name="qualification" value="Weight Training"> Weight Training</label>
+            <label><input type="checkbox" name="qualification" value="Strength Training"> Strength Training</label>
+            <label><input type="checkbox" name="qualification" value="Specialized in Weight Gain"> Specialized in Weight Gain</label>
+            <label><input type="checkbox" name="qualification" value="Specialized in Fat Loss"> Specialized in Fat Loss</label>
             <button type="button" onclick="nextPage()">Next</button>
         </form>
     </div>
@@ -119,37 +169,36 @@
     <!-- Page 2: Trainee's personal details -->
     <div class="page" id="page2">
         <h2>Personal Details</h2>
-        <form id="personalDetailsForm">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+        
+        <label for="weight">Body Weight (kg):</label>
+        <input type="number" id="weight" name="weight" required>
+        
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" name="height" required>
+        
+        <label for="contact">Contact Number:</label>
+        <input type="tel" id="contact" name="contact" pattern="[0-9]{10}" required title="Please enter a valid 10-digit number">
 
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required title="Please enter a valid email address">
 
-            <label for="weight">Body Weight (kg):</label>
-            <input type="number" id="weight" name="weight" required>
+        <label for="medical">Medical Conditions (if any):</label>
+        <textarea id="medical" name="medical"></textarea>
 
-            <label for="height">Height (cm):</label>
-            <input type="number" id="height" name="height" required>
-
-            <label for="medical">Medical Conditions:</label>
-            <textarea id="medical" name="medical"></textarea>
-
-            <label for="contact">Contact Number:</label>
-            <input type="tel" id="contact" name="contact" required>
-
-            <label for="address">Address:</label>
-            <textarea id="address" name="address"></textarea>
-
-            <button type="button" onclick="nextPage()">Next</button>
-        </form>
+        <button type="button" onclick="nextPage()">Next</button>
     </div>
 
     <!-- Page 3: Summary and contact details -->
     <div class="page" id="page3">
         <h2>Summary</h2>
-        <div id="summary" class="summary"></div>
-        <p>Contact us at: <strong>coach@example.com</strong> or call at <strong>+1234567890</strong></p>
+        <div id="summary"></div>
+        <p>Contact us at: <strong>vedup1008@gamil.com</strong> or call at <strong>+91-8956777309</strong></p>
+        <p id="congratulations" style="font-weight: bold; color: green;"></p>
         <button type="submit" onclick="submitForm()">Submit</button>
     </div>
 </div>
@@ -157,15 +206,57 @@
 <script>
     let currentPage = 1;
 
+    function updatePageIndicator() {
+        const indicators = document.querySelectorAll('.page-indicator span');
+        indicators.forEach((dot, index) => {
+            if (index === currentPage - 1) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
     function nextPage() {
+        const form = document.getElementById('mainForm');
+
+        if (currentPage === 1 && !form.reportValidity()) {
+            return; // Stops if the form is invalid
+        }
+
+        if (currentPage === 2 && !validatePersonalDetails()) {
+            return; // Stops if personal details are invalid
+        }
+
         if (currentPage < 3) {
             document.getElementById('page' + currentPage).classList.remove('active');
             currentPage++;
             document.getElementById('page' + currentPage).classList.add('active');
+            updatePageIndicator();
         }
         if (currentPage === 3) {
             displaySummary();
         }
+    }
+
+    function validatePersonalDetails() {
+        const name = document.getElementById('name').value;
+        const contact = document.getElementById('contact').value;
+        const email = document.getElementById('email').value;
+
+        if (name.trim() === "") {
+            alert("Name is required.");
+            return false;
+        }
+        if (!/^\d{10}$/.test(contact)) {
+            alert("Please enter a valid 10-digit phone number.");
+            return false;
+        }
+        if (email.trim() === "") {
+            alert("Email is required.");
+            return false;
+        }
+        return true;
     }
 
     function displaySummary() {
@@ -181,42 +272,26 @@
         const age = document.getElementById('age').value;
         const weight = document.getElementById('weight').value;
         const height = document.getElementById('height').value;
-        const medical = document.getElementById('medical').value;
+        const medical = document.getElementById('medical').value || "None";
         const contact = document.getElementById('contact').value;
-        const address = document.getElementById('address').value;
+        const email = document.getElementById('email').value;
 
         summaryDiv.innerHTML = `
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Age:</strong> ${age}</p>
             <p><strong>Weight:</strong> ${weight} kg</p>
             <p><strong>Height:</strong> ${height} cm</p>
-            <p><strong>Medical Conditions:</strong> ${medical || "None"}</p>
+            <p><strong>Medical Conditions:</strong> ${medical}</p>
             <p><strong>Contact:</strong> ${contact}</p>
-            <p><strong>Address:</strong> ${address}</p>
+            <p><strong>Email:</strong> ${email}</p>
             <p><strong>Selected Programs:</strong> ${qualificationList.join(', ')}</p>
         `;
+        document.getElementById('congratulations').innerText = "Congratulations! Coach will contact you soon.";
     }
 
     function submitForm() {
         alert('Form submitted successfully!');
     }
 </script>
-    <form id="myForm" action="http://localhost:3000/submit" method="POST">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required><br>
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age" required><br>
-    <label for="weight">Weight (kg):</label>
-    <input type="number" id="weight" name="weight" required><br>
-    <label for="height">Height (cm):</label>
-    <input type="number" id="height" name="height" required><br>
-    <label for="medical">Medical Conditions:</label>
-    <textarea id="medical" name="medical"></textarea><br>
-    <label for="contact">Contact Number:</label>
-    <input type="tel" id="contact" name="contact" required><br>
-    <button type="submit">Submit</button>
-</form>
-
-
 </body>
 </html>
